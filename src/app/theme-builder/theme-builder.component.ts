@@ -59,8 +59,10 @@ export class ThemeBuilderComponent implements OnInit {
   }
 
   copy(title: string, val: string) {
+    val = this._removeLinesFromString(val, 0, 9);
+    const start = this._removeLinesFromString(this._getAngularSCSSBeginning(), 0, 1);
     const el = document.createElement('textarea');
-    el.value = val;
+    el.value = start + `${val}`;
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
@@ -79,8 +81,7 @@ export class ThemeBuilderComponent implements OnInit {
   }
 
   makeLink() {
-    let link = window.location.toString().replace(/[#?].*$/g, '');
-    link = `${link}?c=${btoa(this.service.toExternal())}`;
+    const link = this._getUrlLink();
     this.copy('link', link);
   }
 
@@ -135,4 +136,34 @@ export class ThemeBuilderComponent implements OnInit {
       });
     });
   }
+
+  private _getUrlLink(): string {
+    let link = window.location.toString().replace(/[#?].*$/g, '');
+    link = `${link}?c=${btoa(this.service.toExternal())}`;
+    return link;
+  }
+
+  private _getAngularSCSSBeginning(): string {
+    return `
+    /**
+    * Generated theme by Material Theme Generator
+    * ${this._getUrlLink()}
+    **/
+
+    @import \'../../../../node_modules/@angular/material/theming\';
+    // Include the common styles for Angular Material. We include this here so that you only
+    // have to load a single css file for Angular Material in your app.
+
+    `;
+  }
+
+  private _removeLinesFromString(str, start = 0, end): string {
+    // break the textblock into an array of lines
+    const lines = str.split('\n');
+    // remove one line, starting at the first position
+    lines.splice(start, end);
+    // join the array back into a single string
+    return lines.join('\n');
+  }
 }
+

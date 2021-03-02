@@ -190,7 +190,20 @@ export class ThemeService {
   }
 
   fontRule(x: FontSelection) {
-    const weight = x.variant === 'light' ? '300' : (x.variant === 'medium' ? '500' : '400');
+
+    const fontWeightLookup = {
+      'thin' : '100',
+      'extra light' : '200',
+      'light' : '300',
+      'normal' : '400',
+      'medium' : '500',
+      'regular' : '500',
+      'semi bold' : '600',
+      'bold' : '700',
+      'extra bold' : '800',
+      'black' : '900',
+    };
+    const weight = +x.variant ? x.variant : fontWeightLookup[x.variant.toLowerCase()];
 
     return !!x.size ?
       `mat-typography-level(${x.size}px, ${x.lineHeight}px, ${weight}, '${x.family}', ${(x.spacing / x.size).toFixed(4)}em)` :
@@ -243,7 +256,7 @@ $theme-${name}: mat-palette($mat-${name}, main, lighter, darker);`;
 @import 'https://fonts.googleapis.com/css?family=${ThemeService.FONT_FAMILY_MAPPING[theme.icons].replace(/ /g, '+')}';
 ${Array.from(new Set((theme.fonts || []).map(x => x.family.replace(/ /g, '+'))))
         .map(x => `@import url('https://fonts.googleapis.com/css?family=${x}:300,400,500');`).join('\n')}
-     
+
 $fontConfig: (
   ${(theme.fonts || []).map(x => `${x.target}: ${this.fontRule(x)}`).join(',\n  ')}
 );
@@ -395,7 +408,7 @@ $altTheme: ${!theme.lightness ? 'mat-light-theme' : 'mat-dark-theme'}($theme-pri
 
 .material-icons {
   font-size: 24px;
-  font-family: '${ThemeService.FONT_FAMILY_MAPPING[theme.icons]}', 'Material Icons';  
+  font-family: '${ThemeService.FONT_FAMILY_MAPPING[theme.icons]}', 'Material Icons';
   .mat-badge-content {
     font-family: '${theme.fonts.find(x => x.target === 'caption').family}';
   }

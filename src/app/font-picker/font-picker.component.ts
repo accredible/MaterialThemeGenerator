@@ -6,7 +6,7 @@ import { DEFAULT_FONTS, AllFontSelection, FontSelection } from './types';
 import { MatDialog } from '@angular/material/dialog';
 import { GoogleFontSelectorComponent } from '../google-font-selector/google-font-selector.component';
 import { Observable } from 'rxjs';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 
 @Component({
@@ -149,6 +149,29 @@ export class FontPickerComponent implements OnInit {
   }
 
   pickFont(f: FontMeta) {
+    // Remove impossible weights e.g. italic
+    const possibleVariants = ['thin', '100', 'extra light', '200', 'light', '300', 'normal', '400', 'medium', 'regular', '500', 'semi bold', '600', 'bold', '700', 'extra bold', '800', 'black', '900'];
+    this.variants = f.variants.filter(el => possibleVariants.includes(el.toLowerCase()));
+    // Switch words for their values
+
+    const fontWeightLookup = {
+      'thin' : '100',
+      'extra light' : '200',
+      'light' : '300',
+      'normal' : '400',
+      'medium' : '500',
+      'regular' : '500',
+      'semi bold' : '600',
+      'bold' : '700',
+      'extra bold' : '800',
+      'black' : '900',
+    };
+
+    this.variants = this.variants.map(el => {
+      return +el ? el : fontWeightLookup[el.toLowerCase()];
+    });
+    console.log(this.variants);
+
     this.editing.patchValue({ family: f.family });
     this.fontService.loadFont(f.family);
     this.form.updateValueAndValidity();

@@ -31,7 +31,7 @@
         </div>
 
         <mat-form-field>
-          <label>Variant</label>
+          <label>Weight</label>
           <mat-select class="variant" formControlName="variant">
             <mat-option *ngFor="let v of variants" [value]="v">{{v}}</mat-option>
           </mat-select>
@@ -59,7 +59,7 @@
     <div class="header">
       <span>Type</span>
       <span class="family"><a (click)="editAll(); sidenav.toggle()">Family</a></span>
-      <span class="variant"><a (click)="editAll(); sidenav.toggle()">Variant</a></span>
+      <span class="variant"><a (click)="editAll(); sidenav.toggle()">Weight</a></span>
       <span class="size"><a (click)="editAll(); sidenav.toggle()">Size</a></span>
       <span class="spacing"><a (click)="editAll(); sidenav.toggle()">Kern</a></span>
     </div>
