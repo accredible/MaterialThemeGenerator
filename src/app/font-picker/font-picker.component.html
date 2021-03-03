@@ -25,8 +25,7 @@
           </mat-form-field>
           <mat-icon (click)="selectFont()">search</mat-icon>
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option (onSelectionChange)="pickFont(option)" *ngFor="let option of (searchItems | async)"
-                        [value]="option.family">{{option.family}}</mat-option>
+            <mat-option (onSelectionChange)="pickFont(option)" *ngFor="let option of (searchItems | async)" [value]="option.family">{{option.family}}</mat-option>
           </mat-autocomplete>
         </div>
 
@@ -64,7 +63,7 @@
       <span class="spacing"><a (click)="editAll(); sidenav.toggle()">Kern</a></span>
     </div>
     <ul>
-      <li *ngFor="let k of keys; let i = index" (click)="edit(i); sidenav.toggle()">
+      <li *ngFor="let k of keys; let i = index" (click)="edit(i, fonts[k].family); sidenav.toggle()">
         <span class="name">{{fonts[k].target}}</span>
         <span class="family" [style.fontFamily]="fonts[k].family">{{fonts[k].family}}</span>
         <span class="variant"

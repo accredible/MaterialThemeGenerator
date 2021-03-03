@@ -1,7 +1,7 @@
 export interface FontSelection {
   target: string;
   family: string;
-  variant: 'light' | 'regular' | 'medium';
+  variant: string;
   size: number;
   lineHeight?: number;
   capitalized: boolean;
@@ -25,7 +25,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'display-4': {
     target: 'display-4',
     family: 'Roboto',
-    variant: 'light',
+    variant: '300',
     size: 112,
     lineHeight: 112,
     spacing: -1.5,
@@ -34,7 +34,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'display-3': {
     target: 'display-3',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: 56,
     lineHeight: 56,
     spacing: -.5,
@@ -43,7 +43,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'display-2': {
     target: 'display-2',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: 45,
     lineHeight: 48,
     spacing: 0,
@@ -52,7 +52,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'display-1': {
     target: 'display-1',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: 34,
     lineHeight: 40,
     spacing: .25,
@@ -61,7 +61,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   headline: {
     target: 'headline',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: 24,
     lineHeight: 32,
     spacing: 0,
@@ -70,7 +70,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   title: {
     target: 'title',
     family: 'Roboto',
-    variant: 'medium',
+    variant: '500',
     size: 20,
     lineHeight: 32,
     spacing: 0.15,
@@ -79,7 +79,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'subheading-2': {
     target: 'subheading-2',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: 16,
     lineHeight: 28,
     spacing: 0.15,
@@ -88,7 +88,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'subheading-1': {
     target: 'subheading-1',
     family: 'Roboto',
-    variant: 'medium',
+    variant: '500',
     size: 15,
     lineHeight: 24,
     spacing: .1,
@@ -97,7 +97,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'body-2': {
     target: 'body-2',
     family: 'Roboto',
-    variant: 'medium',
+    variant: '500',
     size: 14,
     lineHeight: 24,
     spacing: .25,
@@ -106,7 +106,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   'body-1': {
     target: 'body-1',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: 14,
     lineHeight: 20,
     spacing: .25,
@@ -115,7 +115,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   button: {
     target: 'button',
     family: 'Roboto',
-    variant: 'medium',
+    variant: '500',
     size: 14,
     lineHeight: 14,
     spacing: 1.25,
@@ -124,7 +124,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   caption: {
     target: 'caption',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: 12,
     lineHeight: 20,
     spacing: .4,
@@ -133,7 +133,7 @@ export const DEFAULT_FONTS: { [key: string]: FontSelection } = {
   input: {
     target: 'input',
     family: 'Roboto',
-    variant: 'regular',
+    variant: '500',
     size: undefined,
     lineHeight: 1.125,
     spacing: 1.25,

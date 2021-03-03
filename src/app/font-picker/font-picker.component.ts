@@ -6,7 +6,7 @@ import { DEFAULT_FONTS, AllFontSelection, FontSelection } from './types';
 import { MatDialog } from '@angular/material/dialog';
 import { GoogleFontSelectorComponent } from '../google-font-selector/google-font-selector.component';
 import { Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import {switchMap, map, take} from 'rxjs/operators';
 
 
 @Component({
@@ -120,12 +120,19 @@ export class FontPickerComponent implements OnInit {
     this.items.updateValueAndValidity();
   }
 
-  edit(idx: number) {
-    this.selectedIndex = idx;
-    if (this.selectedIndex >= 0) {
-      this.search.setValue(this.items.at(idx).value.family);
-    }
-    this.editing = this.items.at(idx) as FormGroup;
+  edit(idx: number, k: any) {
+    // We want to ensure the correct variants are shown so we grab the available ones for the selected font
+    this.fontService.getAllFonts().pipe(
+      map(x =>
+        x.items.filter(v => v.family.toLowerCase().startsWith(k.toLowerCase())))
+    ).pipe(take(1)).subscribe(data => {
+      this._setFontWeights(data[0]);
+      this.selectedIndex = idx;
+      if (this.selectedIndex >= 0) {
+        this.search.setValue(this.items.at(idx).value.family);
+      }
+      this.editing = this.items.at(idx) as FormGroup;
+    });
   }
 
   editAll() {
@@ -149,32 +156,36 @@ export class FontPickerComponent implements OnInit {
   }
 
   pickFont(f: FontMeta) {
+    console.log('items: ', this.items);
+    this._setFontWeights(f);
+
+    this.editing.patchValue({ family: f.family });
+    this.fontService.loadFont(f.family);
+    this.form.updateValueAndValidity();
+  }
+
+  private _setFontWeights(font): void {
     // Remove impossible weights e.g. italic
     const possibleVariants = ['thin', '100', 'extra light', '200', 'light', '300', 'normal', '400', 'medium', 'regular', '500', 'semi bold', '600', 'bold', '700', 'extra bold', '800', 'black', '900'];
-    this.variants = f.variants.filter(el => possibleVariants.includes(el.toLowerCase()));
+    this.variants = font.variants.filter(el => possibleVariants.includes(el.toLowerCase()));
     // Switch words for their values
 
     const fontWeightLookup = {
-      'thin' : '100',
-      'extra light' : '200',
-      'light' : '300',
-      'normal' : '400',
-      'medium' : '500',
-      'regular' : '500',
-      'semi bold' : '600',
-      'bold' : '700',
-      'extra bold' : '800',
-      'black' : '900',
+      'thin': '100',
+      'extra light': '200',
+      'light': '300',
+      'normal': '400',
+      'medium': '500',
+      'regular': '500',
+      'semi bold': '600',
+      'bold': '700',
+      'extra bold': '800',
+      'black': '900',
     };
 
     this.variants = this.variants.map(el => {
       return +el ? el : fontWeightLookup[el.toLowerCase()];
     });
-    console.log(this.variants);
-
-    this.editing.patchValue({ family: f.family });
-    this.fontService.loadFont(f.family);
-    this.form.updateValueAndValidity();
   }
 }
 

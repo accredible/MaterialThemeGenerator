@@ -77,6 +77,19 @@ export class ThemeService {
   $lightness = new Subject<boolean>();
   $themeScss: Promise<void>;
 
+  fontWeightLookup = {
+    'thin' : '100',
+    'extra light' : '200',
+    'light' : '300',
+    'normal' : '400',
+    'medium' : '500',
+    'regular' : '500',
+    'semi bold' : '600',
+    'bold' : '700',
+    'extra bold' : '800',
+    'black' : '900',
+  };
+
 
   constructor(private http: HttpClient) {
     this.$themeScss = this.loadThemingScss();
@@ -190,20 +203,7 @@ export class ThemeService {
   }
 
   fontRule(x: FontSelection) {
-
-    const fontWeightLookup = {
-      'thin' : '100',
-      'extra light' : '200',
-      'light' : '300',
-      'normal' : '400',
-      'medium' : '500',
-      'regular' : '500',
-      'semi bold' : '600',
-      'bold' : '700',
-      'extra bold' : '800',
-      'black' : '900',
-    };
-    const weight = +x.variant ? x.variant : fontWeightLookup[x.variant.toLowerCase()];
+    const weight = +x.variant ? x.variant : this.fontWeightLookup[x.variant.toLowerCase()];
 
     return !!x.size ?
       `mat-typography-level(${x.size}px, ${x.lineHeight}px, ${weight}, '${x.family}', ${(x.spacing / x.size).toFixed(4)}em)` :
@@ -241,8 +241,16 @@ $theme-${name}: mat-palette($mat-${name}, main, lighter, darker);`;
   }
 
   getTemplate(theme: Theme) {
-    // tslint:disable:no-trailing-whitespace
-    // tslint:disable:max-line-length
+    // Produce a set with all the used font weights in the theme
+    const usedWeights = new Set();
+    theme.fonts.forEach(font => +font.variant ? usedWeights.add(font.variant) : usedWeights.add(this.fontWeightLookup[font.variant]));
+    // Add default weights that are always needed
+    usedWeights.add('300');
+    usedWeights.add('400');
+    usedWeights.add('500');
+    // Convert the set into an array and join the array into a string
+    const fontWeightsString = (Array.from(usedWeights).sort().join(','));
+
     const tpl = `/**
 * Generated theme by Material Theme Generator
 * https://materialtheme.arcsine.dev
@@ -255,7 +263,7 @@ $theme-${name}: mat-palette($mat-${name}, main, lighter, darker);`;
 // Fonts
 @import 'https://fonts.googleapis.com/css?family=${ThemeService.FONT_FAMILY_MAPPING[theme.icons].replace(/ /g, '+')}';
 ${Array.from(new Set((theme.fonts || []).map(x => x.family.replace(/ /g, '+'))))
-        .map(x => `@import url('https://fonts.googleapis.com/css?family=${x}:300,400,500');`).join('\n')}
+        .map(x => `@import url('https://fonts.googleapis.com/css?family=${x}:${fontWeightsString}');`).join('\n')}
 
 $fontConfig: (
   ${(theme.fonts || []).map(x => `${x.target}: ${this.fontRule(x)}`).join(',\n  ')}
