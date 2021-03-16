@@ -166,7 +166,7 @@ export class FontPickerComponent implements OnInit {
 
   private _setFontWeights(font): void {
     // Remove impossible weights e.g. italic
-    const possibleVariants = ['thin', '100', 'extra light', '200', 'light', '300', 'normal', '400', 'medium', 'regular', '500', 'semi bold', '600', 'bold', '700', 'extra bold', '800', 'black', '900'];
+    const possibleVariants = ['thin', '100', 'extra light', '200', 'light', '300', 'normal', 'regular', '400', 'medium', '500', 'semi bold', '600', 'bold', '700', 'extra bold', '800', 'black', '900'];
     this.variants = font.variants.filter(el => possibleVariants.includes(el.toLowerCase()));
     // Switch words for their values
 
@@ -175,8 +175,8 @@ export class FontPickerComponent implements OnInit {
       'extra light': '200',
       'light': '300',
       'normal': '400',
+      'regular': '400',
       'medium': '500',
-      'regular': '500',
       'semi bold': '600',
       'bold': '700',
       'extra bold': '800',
