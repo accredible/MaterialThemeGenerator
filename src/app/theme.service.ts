@@ -251,6 +251,9 @@ $theme-${name}: mat-palette($mat-${name}, main, lighter, darker);`;
     // Convert the set into an array and join the array into a string
     const fontWeightsString = (Array.from(usedWeights).sort().join(','));
 
+    // The below was replaced with @import 'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined';,
+    // because we only and always want to support both Material Icons and Material Icons Outlined
+    // @import 'https://fonts.googleapis.com/css?family=${ThemeService.FONT_FAMILY_MAPPING[theme.icons].replace(/ /g, '+')}';
     const tpl = `/**
 * Generated theme by Material Theme Generator
 * https://materialtheme.arcsine.dev
@@ -261,7 +264,7 @@ $theme-${name}: mat-palette($mat-${name}, main, lighter, darker);`;
 // have to load a single css file for Angular Material in your app.
 
 // Fonts
-@import 'https://fonts.googleapis.com/css?family=${ThemeService.FONT_FAMILY_MAPPING[theme.icons].replace(/ /g, '+')}';
+@import 'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined';
 ${Array.from(new Set((theme.fonts || []).map(x => x.family.replace(/ /g, '+'))))
         .map(x => `@import url('https://fonts.googleapis.com/css?family=${x}:${fontWeightsString}');`).join('\n')}
 
