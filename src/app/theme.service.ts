@@ -264,7 +264,7 @@ $theme-${name}: mat-palette($mat-${name}, main, lighter, darker);`;
 // have to load a single css file for Angular Material in your app.
 
 // Fonts
-@import 'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined';
+@import url('https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined');
 ${Array.from(new Set((theme.fonts || []).map(x => x.family.replace(/ /g, '+'))))
         .map(x => `@import url('https://fonts.googleapis.com/css?family=${x}:${fontWeightsString}');`).join('\n')}
 
